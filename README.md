@@ -268,6 +268,30 @@ A primary goal of OpenAPI Forge is to provide robust and extensively tested clie
 
 In order to test your generator you'll need to choose a suitable test runner (e.g. [Cucumber](https://www.npmjs.com/package/@cucumber/cucumber) for JavaScript). The standard pattern for each test is that it generates a client API using a schema snippet, then validates the generated output.
 
+### Run Feature Tests
+
+Install openapi-forge as a global package (this is required for running the tests):
+
+```
+$ npm install openapi-forge --global
+```
+
+To test the generators, they must be inside the directory you run the `test-generators` command from. The structure must be:
+
+```
+<current-directory>
+|
+|- openapi-forge-javascript
+|- openapi-forge-csharp
+|...
+```
+
+Run:
+
+```
+$ openapi-forge test-generators --format json --generators openapi-forge-csharp openapi-forge-javascript
+```
+
 ## Formatting
 
 Ideally the generated output should be 'neatly' formatted in an idiomatic way for the target language. There are a couple of ways to achieve this:

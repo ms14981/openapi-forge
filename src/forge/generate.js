@@ -1,3 +1,7 @@
+// IMPORTANT: The relative location of this file to the openapi-forge project is hardcoded in the
+// different language generators for their test-generators command. Do not move this file unless
+// you change the hardcoded parts in all the generator projects too.
+
 const fs = require("fs");
 
 const path = require("path");

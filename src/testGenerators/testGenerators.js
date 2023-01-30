@@ -13,6 +13,7 @@ function isJson(str) {
 }
 
 function parseMessages(messages) {
+  console.log(messages);
   // each test case starts with a testCaseStarted message, followed by a number of testStepFinished messages
   const stepsForTestCase = [];
   messages.forEach((message) => {
@@ -45,12 +46,14 @@ function parseMessages(messages) {
 }
 
 function testGenerators(options) {
+  console.log(options);
   const aggregatedResults = {};
 
   log.setLogLevel(options.logLevel);
 
   options.generators.forEach((generator) => {
     try {
+      console.log(path.join(__dirname, "..", "..", generator));
       const generatorPath = path.resolve(
         path.join(__dirname, "..", "..", generator)
       );

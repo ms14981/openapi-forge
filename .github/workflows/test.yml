@@ -76,3 +76,6 @@ jobs:
         with:
           name: test-results
           path: openapi-forge/test-results.json
+
+
+          # NO CHECKS ON THE CONTENTS OF test-results.json!!! Could be erroneously passing.
