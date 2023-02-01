@@ -1,3 +1,6 @@
+// IMPORTANT: This file is used in the generators, so you will need to change them if this file is moved.
+// See issue https://github.com/ScottLogic/openapi-forge/issues/158
+
 const fs = require("fs");
 
 const path = require("path");
@@ -7,10 +10,10 @@ const minimatch = require("minimatch");
 const fetch = require("node-fetch");
 const { parse } = require("yaml");
 
-const generatorResolver = require("../common/generatorResolver");
-const helpers = require("../helpers");
-const log = require("../common/log");
-const transformers = require("../transformers");
+const generatorResolver = require("./common/generatorResolver");
+const helpers = require("./helpers");
+const log = require("./common/log");
+const transformers = require("./transformers");
 const SwaggerParser = require("@apidevtools/swagger-parser");
 const converter = require("swagger2openapi");
 
@@ -157,13 +160,19 @@ function getFilesInFolders(basePath, partialPath = "") {
   });
 }
 
-async function generate(schemaPathOrUrl, generatorPath, options) {
+// IMPORTANT: This function is used in the generators, so be careful when modifying!
+// See issue https://github.com/ScottLogic/openapi-forge/issues/158
+async function generate(schemaPathOrUrl, generatorPathOrUrl, options) {
   log.setLogLevel(options.logLevel);
   log.logTitle();
   let exception = null;
   let numberOfDiscoveredModels = 0;
   let numberOfDiscoveredEndpoints = 0;
   try {
+    log.standard(`Loading generator from '${generatorPathOrUrl}'`);
+
+    let generatorPath = generatorResolver.getGenerator(generatorPathOrUrl);
+
     log.standard("Validating generator");
     validateGenerator(generatorPath);
 
@@ -265,6 +274,8 @@ async function generate(schemaPathOrUrl, generatorPath, options) {
     }
   } catch (e) {
     exception = e;
+  } finally {
+    generatorResolver.cleanup();
   }
 
   if (exception === null) {

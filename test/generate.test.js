@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
 
-const generate = require("../src/forge/generate");
+const generate = require("../src/generate");
 const generatorResolver = require("../src/common/generatorResolver");
 
 jest.mock("fs");
@@ -24,6 +24,7 @@ describe("generate", () => {
     fs.existsSync.mockReturnValue(true);
     fs.readFileSync.mockReturnValue(fakeSchema);
     generatorResolver.isUrl.mockReturnValue(false);
+    generatorResolver.getGenerator.mockImplementation((path) => path);
     Handlebars.compile.mockReturnValue(() => outCode);
 
     const generatorPackage = {

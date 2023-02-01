@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const generate = require("./generate");
+const generate = require("../generate");
 const generatorResolver = require("../common/generatorResolver");
 const {
   configToCommanderOptions,
@@ -51,8 +51,7 @@ const forgeCommand = function (program) {
           process.env[optionName] = options[option];
         });
 
-        await generate(schema, generatorPath, options);
-        generatorResolver.cleanup();
+        await generate(schema, generatorPathOrUrl, options);
       });
 
       // add the additional options from the generator's config.json file
