@@ -75,7 +75,7 @@ If the testing doesn't work you may be using the wrong script-shell configuratio
 npm config set script-shell "C:\\Program Files\\Git\\bin\\bash.exe"
 ```
 
-See issue: https://github.com/ScottLogic/openapi-forge/issues/156
+See issue: #156
 
 ### OpenAPI Forge Package
 
@@ -87,11 +87,11 @@ $ npm install openapi-forge --global
 
 ### Dependencies on the Forge Project
 
-The generators hardcode the relative path to the generate.js (and log.js) in order to run test-generators. Currently these must be changed manually if the path of generate.js is changed. See this issue: TODO.
+The generators hardcode the relative path to the generate.js (and log.js) in order to run test-generators. Currently these must be changed manually if the path of generate.js is changed. See this issue: #158.
 
 ### GitHub Workflows
 
-The Gherkin tests are run as part of Continuous Integration using `.github/workflows/test.yml`. It runs the tests on every generator, checking for the presence of a generated test results file. It does not check for passing/failing tests. See this issue: TODO.
+The Gherkin tests are run as part of Continuous Integration using `.github/workflows/test.yml`. It runs the tests on every generator, checking for the presence of a generated test results file. It does not check for passing/failing tests. See this issue: #157.
 
 <br>
 
