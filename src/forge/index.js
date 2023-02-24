@@ -63,7 +63,8 @@ const forgeCommand = function (program) {
       }
 
       // parse the command line arguments, and perform generation (on success)
-      command.parse(process.argv);
+      await command.parseAsync(process.argv);
+      process.exit(0);
     });
 };
 
