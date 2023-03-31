@@ -61,6 +61,26 @@ Options:
   -h, --help              Display help for command
 ```
 
+Individual generators may have their own options. Try it out:
+
+```
+% openapi-forge generator-options https://github.com/ScottLogic/openapi-forge-javascript.git
+Usage: openapi-forge generator-options <generator>
+
+This generator has a number of additional options which can be supplied when executing the 'forge' command.
+
+Options:
+  --generator.moduleFormat <value>  The module format to use for the generated
+                                    code. (choices: "commonjs", "esmodule",
+                                    default: "commonjs")
+```
+
+and then
+
+```
+% openapi-forge forge https://petstore3.swagger.io/api/v3/openapi.json https://github.com/ScottLogic/openapi-forge-javascript.git --generator.moduleFormat "esmodule"
+```
+
 ## Client generation
 
 In order to generate a client you need a suitable API specification, this can be supplied as a URL or a local file and can be in JSON or YML format. For this tutorial, we’ll use the Swagger Petstore API:
@@ -134,8 +154,8 @@ And that’s it, you’ve successfully generated and used your first client libr
 OpenAPI Forge currently has the following language generators:
 
 - TypeScript - https://github.com/ScottLogic/openapi-forge-typescript
-- C# - https://github.com/murcikan-scottlogic/openapi-forge-csharp
-- JavaScript - https://github.com/murcikan-scottlogic/openapi-forge-javascript
+- C# - https://github.com/ScottLogic/openapi-forge-csharp
+- JavaScript - https://github.com/Scottlogic/openapi-forge-javascript
 
 # Generator development
 
@@ -247,6 +267,35 @@ You can specify such files by adding the following to `package.json`
 A primary goal of OpenAPI Forge is to provide robust and extensively tested client libraries. This project uses a BDD-style testing approach, with the various test scenarios found in the [`features`](features) folder of this repository. These tests use the standard Gherkin format, which is supported by most programming languages.
 
 In order to test your generator you'll need to choose a suitable test runner (e.g. [Cucumber](https://www.npmjs.com/package/@cucumber/cucumber) for JavaScript). The standard pattern for each test is that it generates a client API using a schema snippet, then validates the generated output.
+
+### Walkthrough for implementing the BDD tests for a new generator
+
+Test implementations must:
+
+1. Start with the `test:generators` script in the `package.json` and do these steps in JS:
+   1. Move the BDD tests to where they can be read by the rest of the test code.
+   1. Pass over control to the target language's implementation of the Gherkin tests.
+1. In the target language, implement the step definitions for each of the `.feature` files. Each test must:
+   1. Run the openapi-forge command with the schema snippet in each test to produce the generated code.
+   1. Prepare the generated code for dynamic use (language dependent). For example:
+      1. JS uses dynamic require statements.
+      1. Java needs to compile the classes, add them to the classpath, and access them with Reflection.
+   1. Implement the rest of the step definitions for the scenario.
+1. Output the results in the format expected by the main forge project `generator-tests` command.
+
+Recommendations for easier development:
+
+1. Start by looking at just one test in one feature file. The main complexity is getting the generation working. Each subsequent test will be easier to write.
+1. To begin with, clean the generated schemas and code manually. Being able to see the generated code for each test will help with debugging.
+1. Write the generator first, or in parallel. It would be a hard task to write the Gherkin implementations without a nearly-done generator.
+1. Use what the existing generators have done as a guide (noting that the JS and TS ones are easier, and so may not be representative).
+
+Existing generators:
+
+1. The JS implementations are easier because we don't need to switch between languages or compile any code: https://github.com/ScottLogic/openapi-forge-javascript/ and
+   https://github.com/ScottLogic/openapi-forge-typescript both at `features/support/`.
+1. C#: https://github.com/ScottLogic/openapi-forge-csharp at `tests/FeaturesTests/`.
+1. Java - coming soon!
 
 ## Formatting
 
